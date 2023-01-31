@@ -235,3 +235,78 @@ int lookLeft(){ // same as above. only to the left
   return distance;
   delay(100);
 }
+void gpsdata()
+{
+ if (gpsSerial.available() > 0) {
+    if (gps.encode(gpsSerial.read())) {
+      if (gps.location.isValid()) {
+        Serial.print(F("- latitude: "));
+        Serial.println(gps.location.lat());
+
+        Serial.print(F("- longitude: "));
+        Serial.println(gps.location.lng());
+
+        Serial.print(F("- altitude: "));
+        if (gps.altitude.isValid())
+          Serial.println(gps.altitude.meters());
+        else
+          Serial.println(F("INVALID"));
+      } else {
+        Serial.println(F("- location: INVALID"));
+      }
+
+      Serial.print(F("- speed: "));
+      if (gps.speed.isValid()) {
+        Serial.print(gps.speed.kmph());
+        Serial.println(F(" km/h"));
+      } else {
+        Serial.println(F("INVALID"));
+      }
+
+      Serial.print(F("- GPS date&time: "));
+      if (gps.date.isValid() && gps.time.isValid()) {
+        Serial.print(gps.date.year());
+        Serial.print(F("-"));
+        Serial.print(gps.date.month());
+        Serial.print(F("-"));
+        Serial.print(gps.date.day());
+        Serial.print(F(" "));
+        Serial.print(gps.time.hour());
+        Serial.print(F(":"));
+        Serial.print(gps.time.minute());
+        Serial.print(F(":"));
+        Serial.println(gps.time.second());
+      } else {
+        Serial.println(F("INVALID"));
+      }
+
+      Serial.println();
+    }
+  }
+
+  if (millis() > 5000 && gps.charsProcessed() < 10)
+  Serial.println(F("No GPS data received: check wiring"));
+  latc= latitude;
+  logc=  longitude;
+
+}  
+
+void gpsheading()
+{
+  float x,y,deltalog,deltalat;
+  deltalog= logd-logc;
+  deltalat=latd-latc;
+
+  x=cos(latd)*sin(deltalog);
+  y=(cos(latc)*sin(latd))-(sin(latc)*cos(latd)*cos(deltalog));
+  
+  bearing=(atan2(x,y))*(180/3.14);
+  Serial.print("bearing");
+  Serial.println(bearing);
+
+  float a,d,c;
+  a=(((sin(deltalat/2)))*(sin(deltalat/2))) + ((cos(latc))*(cos(latd))* (((sin(deltalog/2)))*(sin(deltalog/2)))  );
+  c=2*(atan2(sqrt(a),sqrt(1-a)));
+  d=6371*c; 
+//Serial.println(d);  
+ }
