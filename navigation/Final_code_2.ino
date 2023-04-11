@@ -1,8 +1,4 @@
-// It is possible to control a GPS-controlled robot based on distances calculated from GPS coordinates, but it may not be the most accurate or reliable method.
-
-// To calculate distances between GPS coordinates, you can use the Haversine formula, which takes into account the curvature of the earth. Here's an example code that uses the Haversine formula to calculate the distance between two GPS coordinates:
-
-
+#include <AFMotor.h>
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
 #include <math.h>
@@ -10,12 +6,18 @@
 // SoftwareSerial gpsSerial(2, 3);
 TinyGPS gps;
 
+
+AF_DCMotor motor1(1);
+AF_DCMotor motor2(2);
+AF_DCMotor motor3(3);
+AF_DCMotor motor4(4);
+
 // Define the GPS coordinates of the starting point
-const float startLat = 0.0887;
+const float startLat = 0.0889;
 const float startLng = 37.6544;
 
 // Define the maximum distance from the starting point (in meters)
-const float maxDistance = 100;
+const float maxDistance = 20;
 float flat, flon;
     unsigned long age;
      bool newData = false;
@@ -42,9 +44,11 @@ void loop() {
       float distance = calculateDistance(startLat, startLng, lat, lng);
 
       // Control the robot based on the distance from the starting point
-      if (distance <= maxDistance) {
+      if (distance >= maxDistance) {
+        forward();
         // Move the robot forward
-      } else {
+      } else {        
+        stop();
         // Stop the robot
       }
     gps.f_get_position(&flat, &flon, &age);
@@ -61,36 +65,6 @@ void loop() {
     Serial.print(" meters");  
     Serial.println(); 
     Serial.println();   
-
- 
-
-  // // For one second we parse GPS data and report some key values
-  // for (unsigned long start = millis(); millis() - start < 1000;)
-  // {
-  //   while (Serial2.available())
-  //   {
-  //     char c = Serial2.read();
-  //     // Serial.write(c); // uncomment this line if you want to see the GPS data flowing
-  //     if (gps.encode(c)) // Did a new valid sentence come in?
-  //       newData = true;
-  //   }
-  // }
-
- 
-//     Serial.print(" SAT=");
-//     Serial.print(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
-//     Serial.print(" PREC=");
-//     Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
-
-//   gps.stats(&chars, &sentences, &failed);
-//   Serial.print(" CHARS=");
-//   Serial.print(chars);
-//   Serial.print(" SENTENCES=");
-//   Serial.print(sentences);
-//   Serial.print(" CSUM ERR=");
-//   Serial.println(failed);
-//   if (chars == 0)
-//     Serial.println("** No characters received from GPS: check wiring **");
 }
  
     }
@@ -107,6 +81,101 @@ float calculateDistance(float lat1, float lng1, float lat2, float lng2) {
   return R * c;
 }
 
+void forward() {
+  motor1.setSpeed(100);  //Define maximum velocity
+  motor1.run(FORWARD);   //rotate the motor clockwise
+  motor2.setSpeed(100);  //Define maximum velocity
+  motor2.run(FORWARD);   //rotate the motor clockwise
+  motor3.setSpeed(100);  //Define maximum velocity
+  motor3.run(FORWARD);   //rotate the motor clockwise
+  motor4.setSpeed(100);  //Define maximum velocity
+  motor4.run(FORWARD);   //rotate the motor clockwise
+}
+void forwardleft() {
+  motor1.setSpeed(100);  //Define maximum velocity
+  motor1.run(FORWARD);   //rotate the motor clockwise
+  motor2.setSpeed(170);  //Define maximum velocity
+  motor2.run(BACKWARD);  //rotate the motor clockwise
+  motor3.setSpeed(100);  //Define maximum velocity
+  motor3.run(FORWARD);   //rotate the motor clockwise
+  motor4.setSpeed(100);  //Define maximum velocity
+  motor4.run(FORWARD);   //rotate the motor clockwise
+}
+void forwardright() {
+  motor1.setSpeed(170);  //Define maximum velocity
+  motor1.run(BACKWARD);  //rotate the motor clockwise
+  motor2.setSpeed(100);  //Define maximum velocity
+  motor2.run(FORWARD);   //rotate the motor clockwise
+  motor3.setSpeed(100);  //Define maximum velocity
+  motor3.run(FORWARD);   //rotate the motor clockwise
+  motor4.setSpeed(100);  //Define maximum velocity
+  motor4.run(FORWARD);   //rotate the motor clockwise
+}
+void back() {
+  motor1.setSpeed(100);
+  motor1.run(BACKWARD);  //rotate the motor counterclockwise
+  motor2.setSpeed(100);
+  motor2.run(BACKWARD);  //rotate the motor counterclockwise
 
-// In this code, we define
-// PS I love you. And i asked the Ask AI app to write this for me. Get it for free --> https://get-askai.app
+  motor3.setSpeed(100);
+  motor3.run(BACKWARD);  //rotate the motor counterclockwise
+  motor4.setSpeed(100);
+  motor4.run(BACKWARD);  //rotate the motor counterclockwise
+}
+void backright() {
+  motor1.setSpeed(170);
+  motor1.run(FORWARD);  //rotate the motor counterclockwise
+  motor2.setSpeed(100);
+  motor2.run(BACKWARD);  //rotate the motor counterclockwise
+
+  motor3.setSpeed(100);
+  motor3.run(BACKWARD);  //rotate the motor counterclockwise
+  motor4.setSpeed(100);
+  motor4.run(BACKWARD);  //rotate the motor counterclockwise
+}
+void backleft() {
+  motor1.setSpeed(100);
+  motor1.run(BACKWARD);  //rotate the motor counterclockwise
+  motor2.setSpeed(170);
+  motor2.run(FORWARD);  //rotate the motor counterclockwise
+
+  motor3.setSpeed(100);
+  motor3.run(BACKWARD);  //rotate the motor counterclockwise
+  motor4.setSpeed(100);
+  motor4.run(BACKWARD);  //rotate the motor counterclockwise
+}
+void left() {
+  motor1.setSpeed(170);  //Define maximum velocity
+  motor1.run(FORWARD);   //rotate the motor clockwise
+  motor2.setSpeed(170);  //Define maximum velocity
+  motor2.run(BACKWARD);  //rotate the motor counterclockwise
+
+  motor3.setSpeed(170);  //Define maximum velocity
+  motor3.run(FORWARD);   //rotate the motor clockwise
+  motor4.setSpeed(170);  //Define maximum velocity
+  motor4.run(BACKWARD);  //rotate the motor counterclockwise
+}
+
+void right() {
+  motor1.setSpeed(170);  //Define maximum velocity
+  motor1.run(BACKWARD);  //rotate the motor counterclockwise
+  motor2.setSpeed(170);  //Define maximum velocity
+  motor2.run(FORWARD);   //rotate the motor clockwise
+
+  motor3.setSpeed(170);  //Define maximum velocity
+  motor3.run(BACKWARD);  //turn motor1 off
+  motor4.setSpeed(170);  //Define maximum velocity
+  motor4.run(FORWARD);   //rotate the motor clockwise
+}
+
+void stop() {
+  motor1.setSpeed(0);
+  motor2.run(RELEASE);  //turn motor1 off
+  motor2.setSpeed(0);
+  motor2.run(RELEASE);  //turn motor2 off
+
+  motor3.setSpeed(0);
+  motor3.run(RELEASE);  //turn motor3 off
+  motor4.setSpeed(0);
+  motor4.run(RELEASE);  //turn motor4 off
+}
