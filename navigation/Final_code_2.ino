@@ -28,8 +28,8 @@ void setup() {
   Serial2.begin(9600);
   // gpsSerial.begin(9600);
   
-  Serial.println("Project by Dennis");
-  Serial.println("Automation using GPS coordinates");
+  Serial.println("Jibebe Project by Navigation group ");
+  Serial.println("Automation using GPS coordinates ");
   Serial.println();  
 }
 
