@@ -1,0 +1,35 @@
+{
+  "name": "test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/server": "^11.10.0",
+    "@mantine/core": "^6.0.4",
+    "@mantine/hooks": "^6.0.4",
+    "@mantine/next": "^6.0.4",
+    "@mantine/notifications": "^6.0.4",
+    "@tabler/icons": "^1.119.0",
+    "@turf/bbox-polygon": "^6.5.0",
+    "@turf/turf": "^6.5.0",
+    "eslint": "8.37.0",
+    "eslint-config-next": "13.2.4",
+    "leaflet": "^1.9.3",
+    "next": "13.2.4",
+    "react": "18.2.0",
+    "react-circular-progressbar": "^2.1.0",
+    "react-dom": "18.2.0",
+    "react-leaflet": "^3.1.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7"
+  }
+}
